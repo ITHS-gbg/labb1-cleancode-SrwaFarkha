@@ -1,9 +1,9 @@
 ﻿using System.Collections.Immutable;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Shared;
 using System.ComponentModel.DataAnnotations;
 using Server.DataAccess;
+using Shared.Classes;
 
 namespace Server.Controllers;
 
@@ -18,27 +18,27 @@ public class MainController : ControllerBase
         _shopContext = shopContext;
     }
 
-    [HttpGet("/customers")]
-    public async Task<IActionResult> GetCustomers()
-    {
-        return Ok(await _shopContext.Customers.ToListAsync());
-    }
+    //[HttpGet("/customers")]
+    //public async Task<IActionResult> GetCustomers()
+    //{
+    //    return Ok(await _shopContext.Customers.ToListAsync());
+    //}
 
-    [HttpGet("/customers/{email}")]
-    public async Task<IActionResult> GetCustomer(string email)
-    {
-        return Ok(await _shopContext.Customers.FirstOrDefaultAsync(c => c.Name.Equals(email)));
-    }
+    //[HttpGet("/customers/{email}")]
+    //public async Task<IActionResult> GetCustomer(string email)
+    //{
+    //    return Ok(await _shopContext.Customers.FirstOrDefaultAsync(c => c.Name.Equals(email)));
+    //} 
 
-    [HttpPost("/customers/register")]
-    public async Task<IActionResult> RegisterUser(Customer customer)
-    {
-        if (!customer.Name.Contains("@"))
-            throw new ValidationException("Email is not an email");
-        await _shopContext.AddAsync(customer);
-        await _shopContext.SaveChangesAsync();
-        return Ok();
-    }
+    //[HttpPost("/customers/register")]
+    //public async Task<IActionResult> RegisterUser(Customer customer)
+    //{
+    //    if (!customer.Name.Contains("@"))
+    //        throw new ValidationException("Email is not an email");
+    //    await _shopContext.AddAsync(customer);
+    //    await _shopContext.SaveChangesAsync();
+    //    return Ok();
+    //}
 
     [HttpPost("/customers/login")]
     public async Task<IActionResult> LoginCustomer(string email, string password)
@@ -50,7 +50,7 @@ public class MainController : ControllerBase
         }
         return BadRequest();
     }
-
+     
     [HttpDelete("/customers/delete/{id}")]
     public async Task<IActionResult> DeleteCustomer(int id)
     {

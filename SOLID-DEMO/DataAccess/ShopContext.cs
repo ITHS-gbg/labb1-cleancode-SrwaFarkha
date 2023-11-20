@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Shared;
+using Shared.Classes;
 
 namespace Server.DataAccess;
 
