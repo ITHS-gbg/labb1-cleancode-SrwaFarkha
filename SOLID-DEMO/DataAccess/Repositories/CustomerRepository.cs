@@ -34,5 +34,26 @@ namespace Server.DataAccess.Repositories
 			await _shopContext.SaveChangesAsync();
 			return customer;
 		}
+
+		public async Task<Customer> LoginCustomer(string email, string password)
+		{
+			var customer = await _shopContext.Customers
+				.FirstOrDefaultAsync(c => c.Email.Equals(email) && c.Password.Equals(password));
+			return customer; 
+		}
+
+		public bool DeleteCustomer(int id)
+		{
+			var customer = _shopContext.Customers.FirstOrDefault(c => c.Id == id);
+			if (customer is null)
+			{
+				return false;
+			}
+
+			_shopContext.Customers.Remove(customer);
+			_shopContext.SaveChangesAsync();
+
+			return true;
+		}
 	}
 }

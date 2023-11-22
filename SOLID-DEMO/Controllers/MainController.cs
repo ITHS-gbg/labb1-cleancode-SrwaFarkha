@@ -40,27 +40,27 @@ public class MainController : ControllerBase
     //    return Ok();
     //}
 
-    [HttpPost("/customers/login")]
-    public async Task<IActionResult> LoginCustomer(string email, string password)
-    {
-        var customer = await _shopContext.Customers.FirstOrDefaultAsync(c => c.Name.Equals(email) && c.Password.Equals(password));
-        if (customer is not null)
-        {
-            return Ok();
-        }
-        return BadRequest();
-    }
+    //[HttpPost("/customers/login")]
+    //public async Task<IActionResult> LoginCustomer(string email, string password)
+    //{
+    //    var customer = await _shopContext.Customers.FirstOrDefaultAsync(c => c.Name.Equals(email) && c.Password.Equals(password));
+    //    if (customer is not null)
+    //    {
+    //        return Ok();
+    //    }
+    //    return BadRequest();
+    //}
      
-    [HttpDelete("/customers/delete/{id}")]
-    public async Task<IActionResult> DeleteCustomer(int id)
-    {
-        var customer = await _shopContext.Customers.FirstOrDefaultAsync(c => c.Id == id);
-        if (customer is null) return BadRequest();
+    //[HttpDelete("/customers/delete/{id}")]
+    //public async Task<IActionResult> DeleteCustomer(int id)
+    //{
+    //    var customer = await _shopContext.Customers.FirstOrDefaultAsync(c => c.Id == id);
+    //    if (customer is null) return BadRequest();
 
-        _shopContext.Customers.Remove(customer);
-        await _shopContext.SaveChangesAsync();
-        return Ok();
-    }
+    //    _shopContext.Customers.Remove(customer);
+    //    await _shopContext.SaveChangesAsync();
+    //    return Ok();
+    //}
 
     [HttpGet("/products")]
     public async Task<IActionResult> GetProducts()

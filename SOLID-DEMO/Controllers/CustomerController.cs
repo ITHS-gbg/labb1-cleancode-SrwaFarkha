@@ -18,6 +18,8 @@ namespace Server.Controllers
 			_uow = uow;
 		}
 
+		
+
 		[HttpGet("/customers")]
 		public async Task<IActionResult> GetCustomers()
 		{
@@ -37,6 +39,30 @@ namespace Server.Controllers
 				throw new ValidationException("Email is not an email");
 
 			return Ok(await _uow.CustomerRepository.RegisterCustomer(customer));
+		}
+
+		[HttpPost("/customers/login")]
+		public async Task<IActionResult> LoginCustomer(string email, string password)
+		{
+		
+			var customer = await _uow.CustomerRepository.LoginCustomer(email, password);
+			if (customer is not null)
+			{
+				return Ok();
+			}
+			return BadRequest();
+
+		}
+
+		[HttpDelete("/customers/delete/{id}")]
+		public async Task<IActionResult> DeleteCustomer(int id)
+		{
+			var isDeleted = _uow.CustomerRepository.DeleteCustomer(id);
+			if (isDeleted)
+				Ok();
+			
+			return BadRequest();
+
 		}
 	}
 }

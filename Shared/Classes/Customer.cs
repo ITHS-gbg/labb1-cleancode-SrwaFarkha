@@ -7,8 +7,9 @@
         public string Email { get; set; }
         public string Password { get; set; }
 
-        public Customer(string name, string password, string email)
+        public Customer(int id, string name, string password, string email)
         {
+            Id = id;
             Name = name;
             Password = password;
             Email = email;
