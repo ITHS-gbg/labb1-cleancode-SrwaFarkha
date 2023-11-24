@@ -18,7 +18,6 @@ namespace Server.Controllers
 			_uow = uow;
 		}
 
-		
 
 		[HttpGet("/customers")]
 		public async Task<IActionResult> GetCustomers()
