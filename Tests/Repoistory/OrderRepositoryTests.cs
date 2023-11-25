@@ -91,7 +91,6 @@ namespace Tests.Repoistory
 
 			//Assert
 			Assert.IsTrue(result);
-
 		}
 
 		[Test]
@@ -107,7 +106,6 @@ namespace Tests.Repoistory
 
 			// Assert
 			Assert.IsTrue(result);
-
 		}
 
 		[Test]

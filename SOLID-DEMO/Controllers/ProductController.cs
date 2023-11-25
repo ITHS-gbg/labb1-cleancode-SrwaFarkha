@@ -33,8 +33,8 @@ namespace Server.Controllers
 		[HttpPost("/products")]
 		public async Task<IActionResult> AddProduct(Product newProd)
 		{
-			await _uow.ProductRepository.AddProduct(newProd);
-			return Ok();
+			var result = await _uow.ProductRepository.AddProduct(newProd);
+			return Ok(result);
 		}
 
 	}

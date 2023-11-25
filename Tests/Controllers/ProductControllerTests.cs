@@ -45,5 +45,36 @@ namespace Tests.Controllers
 			//_unitOfWork.Verify(x => x.ProductRepository.GetProducts());
 			Assert.IsNotNull(result);
 		}
+
+		[Test]
+		[TestCase(1, "Product1", "Blue")]
+		[TestCase(2, "Product2", "Big")]
+
+		public void ProductController_GetProduct_ReturnsProductById(int id, string name, string description)
+		{
+			//Arrange
+			var product = new Product(id, name, description);
+
+			//Act
+			_unitOfWork.Setup(x => x.ProductRepository.GetProduct(It.IsAny<int>())).Returns(Task.FromResult(product));
+			var result =  _productController.GetProduct(product.Id);
+
+			//Assert
+			Assert.IsNotNull(result);
+		}
+
+		[Test]
+		public void ProductController_AddProduct_ReturnsNewProduct()
+		{
+			//Arrange
+			var addProduct = new Product(4, "Product4", "Pink");
+
+			//Act
+			_unitOfWork.Setup(x => x.ProductRepository.AddProduct(It.IsAny<Product>())).Returns(Task.FromResult(addProduct));
+			var result =  _productController.AddProduct(addProduct);
+
+			//Assert
+			Assert.NotNull(result);
+		}
 	}
 }

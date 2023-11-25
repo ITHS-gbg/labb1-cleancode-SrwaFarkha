@@ -42,9 +42,9 @@ namespace Server.Controllers
 		{
 			var result = await _uow.OrderRepository.PlaceOrder(cart);
 
-			if (result == true)
+			if (result)
 			{
-				return Ok("Order placed successfully.");
+				return Ok(result);
 			}
 		
 			return BadRequest();
@@ -59,7 +59,7 @@ namespace Server.Controllers
 				return NotFound();
 			}
 
-			return Ok();
+			return Ok(orderId);
 		}
 
 		[HttpPatch("order/add/{id}")]
@@ -83,7 +83,7 @@ namespace Server.Controllers
 			{
 				return BadRequest();
 			}
-			return Ok();
+			return Ok(customer);
 		}
 
 	}
