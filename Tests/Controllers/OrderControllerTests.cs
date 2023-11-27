@@ -43,7 +43,7 @@ namespace Tests.Controllers
 			{
 				new Order(orderId, new List<Product>
 				{
-					new Product(1, productName, description)
+					new Product(1, productName, description, 1)
 				}, customer, shippingDate: DateTime.Now),
 			};
 
@@ -77,7 +77,7 @@ namespace Tests.Controllers
 			{
 				new Order(orderId, new List<Product>
 				{
-					new Product(1, productName, description)
+					new Product(1, productName, description, 1)
 				}, customer, shippingDate: DateTime.Now),
 			};
 

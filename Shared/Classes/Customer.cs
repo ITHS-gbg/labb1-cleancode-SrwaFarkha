@@ -6,6 +6,7 @@
         public string Name { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public CustomerType Level { get; set; } = CustomerType.Standard;
 
         public Customer(int id, string name, string password, string email)
         {
@@ -19,5 +20,12 @@
         {
 	        
         }
-    }
+
+        public enum CustomerType
+        {
+	        Standard,
+	        Premium,
+	        VIP
+        }
+	}
 }

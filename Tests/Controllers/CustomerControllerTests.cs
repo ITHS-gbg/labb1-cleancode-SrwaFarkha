@@ -43,6 +43,20 @@ namespace Tests.Controllers
 			//Assert
 			_unitOfWork.Verify(uow => uow.CustomerRepository.GetAll());
 			Assert.IsNotNull(result);
+
+			Assert.IsInstanceOf<List<Customer>>(result); // Check that the returned result is a list
+
+			var resultList = result.Result as List<Customer>;
+			Assert.AreEqual(customers.Count, resultList.Count); // Check that the count of the returned list is as expected
+
+			foreach (var customer in resultList)
+			{
+				// Assuming there is a method in CustomerController that applies the discount
+				var discountedAmount = _customerController.ApplyDiscount(customer, 100);
+
+				// Add your specific assertions for discounted amounts
+				Assert.AreEqual(10, discountedAmount); // Adjust this based on your actual discount logic
+			}
 		}
 
 		[Test]
@@ -123,5 +137,8 @@ namespace Tests.Controllers
 			Assert.NotNull(result);
 
 		}
+
+		
+
 	}
 }

@@ -35,7 +35,7 @@ namespace Tests.Repoistory
 			{
 				new Order(1, new List<Product>
 				{
-					new Product(1,"Product1", "Black")
+					new Product(1,"Product1", "Black", 1)
 				}, customer, shippingDate:DateTime.Now),
 			};
 
@@ -62,7 +62,7 @@ namespace Tests.Repoistory
 			{
 				new Order(1, new List<Product>
 				{
-					new Product(1,"Product1", "Black")
+					new Product(1,"Product1", "Black", 1)
 				}, customer, shippingDate:DateTime.Now),
 			};
 

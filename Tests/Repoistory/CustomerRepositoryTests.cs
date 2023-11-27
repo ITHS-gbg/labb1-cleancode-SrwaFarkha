@@ -68,6 +68,9 @@ namespace Tests.Repository
 			// arrange
 			var registerCustomer = new Customer(1,"Customer1", "Password1", "Email1@hotmail.com");
 
+			var discountStrategy = new StandardDiscountStrategy();
+			registerCustomer.DiscountStrategy = discountStrategy;
+
 			// act
 			mockCustomerRepo.Setup(x => x.RegisterCustomer(It.IsAny<Customer>())).Returns(Task.FromResult(registerCustomer));
 
@@ -75,13 +78,19 @@ namespace Tests.Repository
 
 			// assert
 			Assert.NotNull(result);
+
+			var discountedAmount = mockCustomerRepo.Object.ApplyDiscount(result, 100);
+			Assert.AreEqual(10, discountedAmount);
 		}
 
 		[Test]
 		public async Task LoginCustomer_ReturnsCustomer()
 		{
 			// arrange
-			var loginCustomer = new Customer(1,"Customer1", "Password1", "Email1@hotmail.com");
+			var loginCustomer = new Customer(1, "Customer1", "Password1", "Email1@hotmail.com")
+			{
+				Level = Customer.CustomerType.Premium 
+			};
 
 			// act
 			mockCustomerRepo.Setup(x => x.LoginCustomer(It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(loginCustomer));
@@ -90,6 +99,13 @@ namespace Tests.Repository
 
 			// assert
 			Assert.NotNull(result);
+
+			var originalAmount = 100; 
+			var discountedAmount = mockCustomerRepo.Object.ApplyDiscount(result, originalAmount);
+
+			Assert.AreEqual(85, discountedAmount); ;
+
+
 		}
 
 
