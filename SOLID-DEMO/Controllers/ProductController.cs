@@ -19,15 +19,25 @@ namespace Server.Controllers
 		[HttpGet("/products")]
 		public async Task<IActionResult> GetProducts()
 		{
-			var result = _uow.ProductRepository.GetProducts();
-			return Ok(result);
+			var result = await _uow.ProductRepository.GetProducts();
+			if (result.Count > 0)
+			{
+				return Ok(result);
+			}
+
+			return NotFound();
 		}
 
 		[HttpGet("/products/{id}")]
 		public async Task<IActionResult> GetProduct(int id)
 		{
-			return Ok(_uow.ProductRepository.GetProduct);
+			var result = await _uow.ProductRepository.GetProduct(id);
+			if (result != null)
+			{
+				return Ok(result);
 
+			}
+			return NotFound();
 		}
 
 		[HttpPost("/products")]

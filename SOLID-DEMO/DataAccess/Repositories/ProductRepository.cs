@@ -1,5 +1,6 @@
 ﻿using Castle.Core.Resource;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Server.DataAccess.Repositories.Interfaces;
 using Shared.Classes;
 
@@ -18,14 +19,23 @@ namespace Server.DataAccess.Repositories
 		public async Task<List<Product>> GetProducts()
 		{
 			var products = await _shopContext.Products.ToListAsync();
-			return products;
+			if (products.Count > 0)
+			{
+				return products;
+
+			}
+
+			return new List<Product>();
 		}
 
 		public async Task<Product> GetProduct(int id)
 		{
 			var product = await _shopContext.Products
 				.FirstOrDefaultAsync(x => x.Id == id);
-
+			if (product == null)
+			{
+				return null;
+			}
 			return product;
 		}
 
@@ -34,7 +44,7 @@ namespace Server.DataAccess.Repositories
 		{
 			await _shopContext.Products.AddAsync(product);
 			await _shopContext.SaveChangesAsync();
-			return product  ;
+			return product;
 		}
 	}
 }

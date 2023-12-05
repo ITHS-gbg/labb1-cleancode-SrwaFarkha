@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tests.Repoistory
+namespace Tests.Repository
 {
 	[TestFixture]
 	public class ProductRepositoryTests

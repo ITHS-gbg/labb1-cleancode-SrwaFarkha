@@ -5,5 +5,7 @@
 		ICustomerRepository CustomerRepository { get; }
 		IOrderRepository OrderRepository { get; }
 		IProductRepository ProductRepository { get; }
+		IShoppingCartRepository ShoppingCartRepository { get; }
+
 	}
 }

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Shared.Enums;
 
 namespace Tests.Controllers
 {
@@ -24,20 +25,14 @@ namespace Tests.Controllers
 		}
 
 		[Test]
-		[TestCase(1, "John Doe", "email@hotmail.com", "111", 1, "Product1", "Black")]
-		[TestCase(2, "Jane Smith", "jane@gmail.com", "222", 2, "Product2", "White")]
+		[TestCase("John Doe", "111", "email@hotmail.com", 1, "Product1", "Black")]
+		[TestCase( "Jane Smith",  "222", "jane@gmail.com", 2, "Product2", "White")]
 		public void OrderController_GetAllOrders_ReturnsAllOrders(
-			int customerId, string customerName, string customerEmail, string customerPassword,
+			string customerName, string customerPassword, string customerEmail,
 			int orderId, string productName, string description)
 		{
 			// Arrange
-			var customer = new Customer
-			{
-				Id = customerId,
-				Name = customerName,
-				Email = customerEmail,
-				Password = customerPassword
-			};
+			var customer = new Customer(customerName, customerPassword, customerEmail, Enums.CustomerLevel.Premium);
 
 			var orders = new List<Order>
 			{
@@ -58,20 +53,15 @@ namespace Tests.Controllers
 		}
 
 		[Test]
-		[TestCase(1, "John Doe", "email@hotmail.com", "111", 1, "Product1", "Black")]
-		[TestCase(1, "John Doe", "email@hotmail.com", "111", 2, "Product2", "White")]
+		[TestCase( "John Doe", "email@hotmail.com", "111", 1, "Product1", "Black")]
+		[TestCase( "John Doe", "email@hotmail.com", "111", 2, "Product2", "White")]
 		public void OrderController_GetOrdersForCustomer_ReturnsOrderForCustomerById(
-			int customerId, string customerName, string customerEmail, string customerPassword,
+			string customerName, string customerEmail, string customerPassword,
 			int orderId, string productName, string description)
 		{
 			//Arrange
-			var customer = new Customer
-			{
-				Id = customerId,
-				Name = customerName,
-				Email = customerEmail,
-				Password = customerPassword
-			};
+			var customer = new Customer(customerName, customerPassword, customerEmail, Enums.CustomerLevel.Premium);
+
 
 			var orders = new List<Order>
 			{
@@ -83,7 +73,7 @@ namespace Tests.Controllers
 
 			//Act
 			_unitOfWork.Setup(x => x.OrderRepository.GetOrdersForCustomer(It.IsAny<int>())).Returns(Task.FromResult(orders));
-			var result = _orderController.GetOrdersForCustomer(customerId);
+			var result = _orderController.GetOrdersForCustomer(1);
 
 			//Assert
 			Assert.IsNotNull(result);
@@ -124,43 +114,7 @@ namespace Tests.Controllers
 			Assert.IsTrue(result.IsCompleted);
 		}
 
-		[Test]
-		public void OrderController_AddProductToShoppingCart_ReturnsTrue()
-		{
-			//Arrange
-			var customerCart = new CustomerCart
-			{
-				CustomerId = 1,
-				ProductIds = new List<int> { 1, 2, 3 }
-			};
-
-			//Act
-			_unitOfWork.Setup(x => x.OrderRepository.AddProductToShoppingCart(It.IsAny<CustomerCart>(), It.IsAny<int>())).Returns(Task.FromResult(true));
-			var result = _orderController.CancelOrder(customerCart.CustomerId);
-
-			//Assert
-			Assert.IsTrue(result.IsCompleted);
-
-		}
-
-		[Test]
-		public void OrderController_DeleteProductFromShoppingCart_ReturnsTrue()
-		{
-			// Arrange
-			var order = new CustomerCart
-			{
-				CustomerId = 1,
-				ProductIds = new List<int> { 1 }
-			};
-
-			//act
-			_unitOfWork.Setup(x => x.OrderRepository.DeleteProductFromShoppingCart(It.IsAny<CustomerCart>(), It.IsAny<int>())).Returns(Task.FromResult(true));
-			var result = _orderController.DeleteProductFromShoppingCart(order, 1);
-
-			//Assert
-			Assert.IsTrue(result.IsCompleted);
-
-		}
+		
 
 
 	}

@@ -25,15 +25,15 @@ namespace Tests.Controllers
 		}
 
 		[Test]
-		[TestCase(1, "customer1", "black")]
-		[TestCase(2, "customer2", "white")]
+		[TestCase(1, "customer1", "black", 100)]
+		[TestCase(2, "customer2", "white", 100)]
 
-		public void ProductController_GetProducts_ReturnsAllProducts(int id, string name, string description)
+		public void ProductController_GetProducts_ReturnsAllProducts(int id, string name, string description, double price)
 		{
 			//Arrange
 			var products = new List<Product>
 			{
-				new Product(id,  name, description )
+				new Product(id,  name, description, price )
 			};
 
 			_unitOfWork.Setup(x => x.ProductRepository.GetProducts()).Returns(Task.FromResult(products));
@@ -47,13 +47,13 @@ namespace Tests.Controllers
 		}
 
 		[Test]
-		[TestCase(1, "Product1", "Blue")]
-		[TestCase(2, "Product2", "Big")]
+		[TestCase(1, "Product1", "Blue", 100)]
+		[TestCase(2, "Product2", "Big", 100)]
 
-		public void ProductController_GetProduct_ReturnsProductById(int id, string name, string description)
+		public void ProductController_GetProduct_ReturnsProductById(int id, string name, string description, double price)
 		{
 			//Arrange
-			var product = new Product(id, name, description);
+			var product = new Product(id, name, description, price);
 
 			//Act
 			_unitOfWork.Setup(x => x.ProductRepository.GetProduct(It.IsAny<int>())).Returns(Task.FromResult(product));
@@ -67,7 +67,7 @@ namespace Tests.Controllers
 		public void ProductController_AddProduct_ReturnsNewProduct()
 		{
 			//Arrange
-			var addProduct = new Product(4, "Product4", "Pink");
+			var addProduct = new Product(4, "Product4", "Pink", 100);
 
 			//Act
 			_unitOfWork.Setup(x => x.ProductRepository.AddProduct(It.IsAny<Product>())).Returns(Task.FromResult(addProduct));

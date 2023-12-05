@@ -14,4 +14,9 @@ public class Product
 	    Description = description;
         Price = price;
     }
+
+    public Product()
+    {
+
+    }
 }

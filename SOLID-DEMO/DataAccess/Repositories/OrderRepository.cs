@@ -19,7 +19,12 @@ namespace Server.DataAccess.Repositories
 			var result = await _shopContext.Orders
 				.Include(o => o.Customer)
 				.Include(o => o.Products).ToListAsync();
-			return result;
+			if (result.Count > 0)
+			{
+				return result;
+			}
+
+			return new List<Order>();
 		}
 
 		public async Task<List<Order>> GetOrdersForCustomer(int customerId)
@@ -29,7 +34,11 @@ namespace Server.DataAccess.Repositories
 				.Include(x => x.Products)
 				.Where(x => x.Customer.Id == customerId)
 				.ToListAsync();
-			return result;
+			if (result.Count > 0)
+			{
+				return result;
+			}
+			return new List<Order>();
 		}
 
 		public async Task<bool> PlaceOrder(CustomerCart cart)
@@ -38,7 +47,7 @@ namespace Server.DataAccess.Repositories
 
 			if (customer is null)
 			{
-				return false; 
+				return false;
 			}
 
 			var products = new List<Product>();
@@ -62,70 +71,20 @@ namespace Server.DataAccess.Repositories
 
 			return true;
 		}
+	
 
 		public async Task<bool> CancelOrder(int id)
 		{
-			var orderId = await _shopContext.Orders.FirstOrDefaultAsync(o => o.Id == id);
-			
-			_shopContext.Orders.Remove(orderId);
-			await _shopContext.SaveChangesAsync();
-			return true;
-		}
-
-		public async Task<bool> AddProductToShoppingCart(CustomerCart itemsToAdd, int id)
-		{
-			var customer = await _shopContext.Customers.FirstOrDefaultAsync(c => c.Id.Equals(itemsToAdd.CustomerId));
-			if (customer is null)
+			var order = await _shopContext.Orders.FirstOrDefaultAsync(o => o.Id == id);
+			if (order == null)
 			{
 				return false;
 			}
 
-			var products = new List<Product>();
-
-			foreach (var prodId in itemsToAdd.ProductIds)
-			{
-				var prod = await _shopContext.Products.FirstOrDefaultAsync(p => p.Id == prodId);
-				if (prod is null)
-				{
-					return false;
-				}
-				products.Add(prod);
-			}
-
-			var order = await _shopContext.Orders
-				.Include(o => o.Customer)
-				.Include(o => o.Products).FirstOrDefaultAsync(o => o.Id == id);
-			order.ShippingDate = DateTime.Now.AddDays(5);
-			order.Products.AddRange(products);
+			_shopContext.Orders.Remove(order);
 			await _shopContext.SaveChangesAsync();
-
 			return true;
 		}
 
-		public async Task<bool> DeleteProductFromShoppingCart(CustomerCart itemsToRemove, int id)
-		{
-			 var customer = await _shopContext.Customers.FirstOrDefaultAsync(c => c.Id.Equals(itemsToRemove.CustomerId));
-			if (customer is null)
-			{
-				return false;
-			}
-
-			var order = await _shopContext.Orders.Include(o => o.Customer.Id == customer.Id).Include(o => o.Products).FirstOrDefaultAsync(o => o.Id == id);
-			order.ShippingDate = DateTime.Now.AddDays(5);
-
-			foreach (var prodId in itemsToRemove.ProductIds)
-			{
-				var prod = order.Products.FirstOrDefault(p => p.Id == prodId);
-				if (prod is null)
-				{
-					continue;
-				}
-				order.Products.Remove(prod);
-			}
-
-			await _shopContext.SaveChangesAsync();
-
-			return true;
-		}
 	}
 	}

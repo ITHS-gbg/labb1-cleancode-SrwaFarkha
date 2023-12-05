@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tests.Repoistory
+namespace Tests.Repository
 {
 	public class OrderRepositoryTests
 	{
@@ -108,41 +108,6 @@ namespace Tests.Repoistory
 			Assert.IsTrue(result);
 		}
 
-		[Test]
-		public async Task OrderRepository_AddProductToShoppingCart_ReturnsTrue()
-		{
-			//Arrange
-			var order = new CustomerCart
-			{
-				CustomerId = 1,
-				ProductIds = new List<int> { 1 }
-			};
-
-			//Act
-			mockOrderRepo.Setup(x => x.AddProductToShoppingCart(It.IsAny<CustomerCart>(),It.IsAny<int>())).Returns(Task.FromResult(true));
-			var result = await mockOrderRepo.Object.AddProductToShoppingCart(order, 1);
-
-			//Assert
-			Assert.IsTrue(result);
-
-		}
-
-		[Test]
-		public async Task OrderRepository_DeleteProductFromShoppingCart_ReturnTrue()
-		{
-			// Arrange
-			var order = new CustomerCart
-			{
-				CustomerId = 1,
-				ProductIds = new List<int> { 1 }
-			};
-
-			// Act
-			mockOrderRepo.Setup(x => x.DeleteProductFromShoppingCart(It.IsAny<CustomerCart>(), It.IsAny<int>())).ReturnsAsync(true);
-			var result = await mockOrderRepo.Object.DeleteProductFromShoppingCart(order, 1);
-
-			// Assert
-			Assert.IsTrue(result);
-		}
+		
 	}
 }

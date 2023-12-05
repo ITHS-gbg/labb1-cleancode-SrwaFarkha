@@ -21,20 +21,25 @@ namespace Server.Controllers
 		public async Task<IActionResult> GetAllOrders()
 		{
 			var orders = await _uow.OrderRepository.GetAllOrders();
-			return Ok(orders);
+			if (orders.Count > 0)
+			{
+				return Ok(orders);
+			}
+
+			return NotFound();
 		}
 
 		[HttpGet("/orders/customer/{id}")]
 		public async Task<IActionResult> GetOrdersForCustomer(int id)
 		{
-			var getOrdersByCustomerId = await _uow.OrderRepository.GetOrdersForCustomer(id);
+			var customerOrders = await _uow.OrderRepository.GetOrdersForCustomer(id);
 
-			if (getOrdersByCustomerId.Count == 0)
+			if (customerOrders.Count == 0)
 			{
 				return NotFound($"No orders found for customer with ID {id}");
 			}
 
-			return Ok(getOrdersByCustomerId);
+			return Ok(customerOrders);
 		}
 
 		[HttpPost("/orders")]
@@ -58,32 +63,7 @@ namespace Server.Controllers
 			{
 				return NotFound();
 			}
-
 			return Ok(orderId);
-		}
-
-		[HttpPatch("order/add/{id}")]
-		public async Task<IActionResult> AddProductToShoppingCart(CustomerCart itemsToAdd, int id)
-		{
-			var itemAdded = await _uow.OrderRepository.AddProductToShoppingCart(itemsToAdd, id);
-
-			if (itemAdded)
-			{
-				return Ok();
-			}
-
-			return NotFound();
-		}
-
-		[HttpPatch("order/remove/{id}")]
-		public async Task<IActionResult> DeleteProductFromShoppingCart(CustomerCart itemsToRemove, int id)
-		{
-			var customer = await _uow.OrderRepository.DeleteProductFromShoppingCart(itemsToRemove, id);
-			if (customer is false)
-			{
-				return BadRequest();
-			}
-			return Ok(customer);
 		}
 
 	}
